@@ -1,0 +1,45 @@
+def g_fonksiyonu(n):
+    return n % 2
+
+def anahtar_uretec():
+    # 1. Giriş değerini (seed) kullanıcıdan al
+    try:
+        seed = int(input("Başlangıç değerini (anahtar) giriniz: "))
+    except ValueError:
+        print("Hata: Lütfen bir tam sayı girin.")
+        return
+
+    dizi = []
+    mevcut = seed
+    sifir_sayisi = 0
+    bir_sayisi = 0
+    hedef_kota = 5 # 10 bitin yarısı 0, yarısı 1 olmalı
+    
+    # 2. Döngü: 10 bit tamamlanana kadar çalışır
+    while len(dizi) < 10:
+        bit = g_fonksiyonu(mevcut)
+        
+        # Eşitlik Kontrolü: Kotası dolmayan biti ekle
+        if bit == 0 and sifir_sayisi < hedef_kota:
+            dizi.append(0)
+            sifir_sayisi += 1
+        elif bit == 1 and bir_sayisi < hedef_kota:
+            dizi.append(1)
+            bir_sayisi += 1
+            
+        # Collatz Adımı
+        if mevcut % 2 == 0:
+            mevcut = mevcut // 2
+        else:
+            mevcut = 3 * mevcut + 1
+            
+        # 1-4-2 döngüsüne girerse seed üzerinden yeni yol oluştur
+        if mevcut <= 1:
+            mevcut = seed + len(dizi) + 17
+
+    # 3. Sonucu Yazdır
+    print(f"\nÜretilen 10 Bitlik Dizi: {dizi}")
+    print(f"Kontrol: {sifir_sayisi} sıfır, {bir_sayisi} bir.")
+
+# Çalıştır
+anahtar_uretec()
